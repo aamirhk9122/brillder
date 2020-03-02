@@ -21,45 +21,60 @@ export interface DragAndBoxProps {
   index: number
   value: QuestionComponentTypeEnum
   data: any
-  onDrop: Function
+  onDrop(index1: number, index2: number): void
+  onHover(index1: number, index2: number): void
   component: React.FC<any>,
   cleanComponent(): void
   updateComponent(component:any, index:number):void
 }
 
-const DragAndDropBox: React.FC<DragAndBoxProps> = ({ locked, value, index, onDrop, data, component, cleanComponent, updateComponent }) => {
+const DragAndDropBox: React.FC<DragAndBoxProps> = ({
+  locked, value, index, onDrop, onHover, data, component, cleanComponent, updateComponent
+}) => {
   const ref = useRef<HTMLDivElement>(null)
+  let isHoverUsed = false;
 
   let UniqueComponent = component;
    
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: ItemTypes.BOX,
-    drop: () => ({ index, value, allowedDropEffect: "any" }),
     collect: (monitor: any) => (
       { isOver: monitor.isOver(), canDrop: monitor.canDrop() }
     ),
+    drop: () => ({ index, value, allowedDropEffect: "any" }),
+    hover(data: any) {
+      console.log(data)
+      if (data.index !== item.index && isHoverUsed === false) {
+        isHoverUsed = true;
+        onHover(index, data.index);
+        data.index = index;
+      }
+    },
+    canDrop: () => !locked,
   })
 
-  const item = { name: "", type: ItemTypes.BOX }
-  const [{ opacity }, drag] = useDrag({
+  const item = { name: "", index, value, type: ItemTypes.BOX }
+  const [{ }, drag] = useDrag({
     item,
+    begin() {
+      data.isMoving = true
+    },
     end(item: { name: string } | undefined, monitor: DragSourceMonitor) {
+      data.isMoving = false;
       const dropResult: DropResult = monitor.getDropResult()
       if (item && dropResult) {
         const isDropAllowed =
           dropResult.allowedDropEffect === 'any' ||
           dropResult.allowedDropEffect === dropResult.dropEffect
         if (isDropAllowed) {
-          onDrop({index, value}, {index: dropResult.index, value: dropResult.value});
+          onDrop(index, dropResult.index);
         } else {
           alert(`You cannot ${dropResult.dropEffect} an item into the ${dropResult.value}`);
         }
       }
     },
-    collect: (monitor: any) => ({
-      opacity: monitor.isDragging() ? 0.9 : 1,
-    }),
-    canDrag: (monitor: any) => !locked
+    collect: () => ({ }),
+    canDrag: () => !locked
   })
 
   const isActive = canDrop && isOver
@@ -68,6 +83,11 @@ const DragAndDropBox: React.FC<DragAndBoxProps> = ({ locked, value, index, onDro
     backgroundColor = '#d9d9d9';
   }
   drag(drop(ref))
+
+  let opacity = 1;
+  if (data.isMoving) {
+    opacity = 0.5;
+  }
 
   return (
     <div ref={ref} className="drag-and-drop-box" style={{ backgroundColor, width: '100%', opacity }}>

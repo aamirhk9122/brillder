@@ -27,6 +27,7 @@ export interface QuestionProps {
   nextOrNewQuestion(): void
   getQuestionIndex(question: Question): number
   setQuestionComponents(index: number, components: any[]): void
+  moveComponents(index1:number, index2:number, component: any): void
   setPreviousQuestion(): void
   toggleLock(): void
   locked: boolean
@@ -36,7 +37,7 @@ const BuildQuestionComponent: React.FC<QuestionProps> = (
   {
     brickId, question, history, setQuestionType, getQuestionIndex, toggleLock, 
     saveBrick, updateComponent, nextOrNewQuestion, setQuestion,
-    setQuestionComponents, locked, setPreviousQuestion
+    setQuestionComponents, locked, setPreviousQuestion, moveComponents,
   }
 ) => {
   const { type } = question;
@@ -58,15 +59,10 @@ const BuildQuestionComponent: React.FC<QuestionProps> = (
     setQuestion(index, updatedQuestion);
   }
 
-  const swapComponents = (drag: any, drop: any) => {
+  const swapComponents = (drop: any, drag: any) => {
     if (locked) { return; }
-    const index = getQuestionIndex(question);
-    const components = Object.assign([], question.components) as any[];
-    const tempComp = components[drag.index];
-    components[drag.index] = components[drop.index];
-    components[drop.index] = tempComp;
-
-    setQuestionComponents(index, components);
+    const component = Object.assign({}, question.components[drag.index]) as any[];
+    moveComponents(drop.index, drag.index, component);
   }
 
   const addComponent = () => {

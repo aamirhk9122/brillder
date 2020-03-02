@@ -20,21 +20,21 @@ export interface SwitchQuestionProps {
   hint: Hint
   locked: boolean
   componentCount: number
+  onDrop(index1:number, index2: number): void
   updateComponent(component: any, index: number): void
-  swapComponents: Function
+  swapComponents(index1:number, index2: number): void
   setQuestionHint(hintState: HintState): void
   removeComponent(componentIndex: number): void
 }
 
 const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
   type, index, component, hint, locked, componentCount,
-  swapComponents,
+  swapComponents, onDrop,
   setQuestionHint,
   updateComponent,
   uniqueComponent,
   removeComponent
 }) => {
-
   const renderEmptyComponent = () => 
     <Grid container style={{height:'100%', position: 'relative'}} justify="center" alignContent="center">
       {
@@ -88,11 +88,18 @@ const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
           index={index}
           value={value}
           data={component}
-          onDrop={swapComponents}
+          onDrop={onDrop}
+          onHover={swapComponents}
           cleanComponent={() => {}}
           updateComponent={updateComponent}
           component={innerComponent} />
-        <HintComponent status={hint.status} locked={locked} value={hint.value} list={hint.list} count={numberOfAnswers} onChange={setQuestionHint}/>
+        <HintComponent
+          status={hint.status}
+          locked={locked}
+          value={hint.value}
+          list={hint.list}
+          count={numberOfAnswers}
+          onChange={setQuestionHint}/>
       </div>
     )
   }
@@ -105,7 +112,8 @@ const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
           index={index}
           value={value}
           data={component}
-          onDrop={swapComponents}
+          onDrop={onDrop}
+          onHover={swapComponents}
           cleanComponent={cleanComponent}
           updateComponent={updateComponent}
           component={innerComponent} />
@@ -118,7 +126,8 @@ const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
       index={index}
       value={value}
       data={component}
-      onDrop={swapComponents}
+      onDrop={onDrop}
+      onHover={swapComponents}
       cleanComponent={cleanComponent}
       updateComponent={updateComponent}
       component={innerComponent} />

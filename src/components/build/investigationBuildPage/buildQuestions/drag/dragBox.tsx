@@ -58,7 +58,7 @@ const DragBox: React.FC<BoxProps> = ({
     collect: (monitor: any) => ({
       opacity: monitor.isDragging() ? 0.9 : 1,
     }),
-    canDrag: (monitor: any) => !locked
+    canDrag: () => !locked
   })
 
   const renderContent = () => {

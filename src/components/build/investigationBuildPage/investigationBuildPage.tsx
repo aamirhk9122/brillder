@@ -135,7 +135,7 @@ const InvestigationBuildPage: React.FC<InvestigationBuildProps> = (props) => {
     const question = Object.assign({}, activeQuestion);
     setQuestion(index, question);
   }
-  
+
   const convertQuestionTypes = (type: QuestionTypeEnum) => {
     if (type === QuestionTypeEnum.ChooseOne || type === QuestionTypeEnum.ChooseSeveral) {
       chooseOneToChooseSeveral(type);
@@ -196,6 +196,16 @@ const InvestigationBuildPage: React.FC<InvestigationBuildProps> = (props) => {
       update(questions, { [index]: { components: { $set: components } } })
     );
   }
+
+  const moveComponents = (item1Index: number, item2Index: number, component: any) => {
+    const index = getQuestionIndex(activeQuestion);
+    let newComponents = Object.assign([], activeQuestion.components) as any[];
+    newComponents.splice(item2Index, 1);
+    newComponents.splice(item1Index, 0, component);
+    setQuestions(
+      update(questions, { [index]: { components: { $set: newComponents } } })
+    );
+  };
 
   const { brick } = props;
 
@@ -271,6 +281,7 @@ const InvestigationBuildPage: React.FC<InvestigationBuildProps> = (props) => {
         setQuestion={setQuestion}
         toggleLock={toggleLock}
         locked={locked}
+        moveComponents={moveComponents}
         setQuestionType={convertQuestionTypes}
         setPreviousQuestion={setPreviousQuestion}
         nextOrNewQuestion={setNextQuestion}
@@ -280,13 +291,13 @@ const InvestigationBuildPage: React.FC<InvestigationBuildProps> = (props) => {
 
   const renderQuestionComponent = () => {
     return (
-    <QuestionTypePage
-      history={history}
-      brickId={brickId}
-      questionId={activeQuestion.id}
-      setQuestionType={setQuestionTypeAndMove}
-      setPreviousQuestion={setPreviousQuestion}
-      questionType={activeQuestion.type} />
+      <QuestionTypePage
+        history={history}
+        brickId={brickId}
+        questionId={activeQuestion.id}
+        setQuestionType={setQuestionTypeAndMove}
+        setPreviousQuestion={setPreviousQuestion}
+        questionType={activeQuestion.type} />
     );
   }
 
@@ -294,7 +305,7 @@ const InvestigationBuildPage: React.FC<InvestigationBuildProps> = (props) => {
     <DndProvider backend={Backend}>
       <div className="investigation-build-page">
         <Grid container direction="row" alignItems="center" style={{ height: '100%' }}>
-          <Grid container item xs={12} sm={12} md={7} lg={8} alignItems="center" style={{ height: '100%'}} className="question-container">
+          <Grid container item xs={12} sm={12} md={7} lg={8} alignItems="center" style={{ height: '100%' }} className="question-container">
             <Grid container direction="row" justify="center" alignItems="center" style={{ height: '100%' }}>
               <Grid container item xs={12} sm={12} md={12} lg={9} style={{ height: '90%' }}>
                 <DragableTabs
