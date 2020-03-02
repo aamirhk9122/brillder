@@ -59,7 +59,29 @@ const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
 
   let innerComponent = renderEmptyComponent as any;
   let value = type;
- 
+  if (type === QuestionComponentTypeEnum.Text) {
+    innerComponent = TextComponent;
+  } else if (type === QuestionComponentTypeEnum.Image) {
+    innerComponent = ImageComponent;
+  } else if (type === QuestionComponentTypeEnum.Quote) {
+    innerComponent = QuoteComponent;
+  } else if (type === QuestionComponentTypeEnum.Sound) {
+    innerComponent = SoundComponent;
+  } else if (type === QuestionComponentTypeEnum.Equation) {
+    innerComponent = EquationComponent;
+  } else if (type === QuestionComponentTypeEnum.Component) {
+    innerComponent = uniqueComponent;
+    let numberOfAnswers = getNumberOfAnswers(component);
+    if (uniqueComponent.name === "MissingWordComponent") {
+      if (component.choices) {
+        numberOfAnswers = component.choices.length;
+      }
+    } else if (uniqueComponent.name === "CategoriseBuildComponent") {
+      if (component.categories) {
+        numberOfAnswers = component.categories.length;
+      }
+    }
+  }
   return (
     <DragAndDropBox
       locked={locked}
@@ -70,7 +92,7 @@ const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
       onHover={swapComponents}
       cleanComponent={cleanComponent}
       updateComponent={updateComponent}
-      component={renderEmptyComponent} />
+      component={innerComponent} />
   );
 }
 
