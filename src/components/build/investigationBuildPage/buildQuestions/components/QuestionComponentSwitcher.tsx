@@ -59,67 +59,7 @@ const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
 
   let innerComponent = renderEmptyComponent as any;
   let value = type;
-  if (type === QuestionComponentTypeEnum.Text) {
-    innerComponent = TextComponent;
-  } else if (type === QuestionComponentTypeEnum.Image) {
-    innerComponent = ImageComponent;
-  } else if (type === QuestionComponentTypeEnum.Quote) {
-    innerComponent = QuoteComponent;
-  } else if (type === QuestionComponentTypeEnum.Sound) {
-    innerComponent = SoundComponent;
-  } else if (type === QuestionComponentTypeEnum.Equation) {
-    innerComponent = EquationComponent;
-  } else if (type === QuestionComponentTypeEnum.Component) {
-    innerComponent = uniqueComponent;
-    let numberOfAnswers = getNumberOfAnswers(component);
-    if (uniqueComponent.name === "MissingWordComponent") {
-      if (component.choices) {
-        numberOfAnswers = component.choices.length;
-      }
-    } else if (uniqueComponent.name === "CategoriseBuildComponent") {
-      if (component.categories) {
-        numberOfAnswers = component.categories.length;
-      }
-    }
-    return (
-      <div className="unique-component-wrapper">
-        <DragAndDropBox
-          locked={locked}
-          index={index}
-          value={value}
-          data={component}
-          onDrop={onDrop}
-          onHover={swapComponents}
-          cleanComponent={() => {}}
-          updateComponent={updateComponent}
-          component={innerComponent} />
-        <HintComponent
-          status={hint.status}
-          locked={locked}
-          value={hint.value}
-          list={hint.list}
-          count={numberOfAnswers}
-          onChange={setQuestionHint}/>
-      </div>
-    )
-  }
-  if (innerComponent !== renderEmptyComponent) {
-    return (
-      <div style={{position: 'relative', width: '100%'}}>
-        <DeleteIcon className="right-top-icon" style={{right: '2px', top: '7px'}} onClick={cleanComponent} />
-        <DragAndDropBox
-          locked={locked}
-          index={index}
-          value={value}
-          data={component}
-          onDrop={onDrop}
-          onHover={swapComponents}
-          cleanComponent={cleanComponent}
-          updateComponent={updateComponent}
-          component={innerComponent} />
-      </div>
-    );
-  }
+ 
   return (
     <DragAndDropBox
       locked={locked}
@@ -130,7 +70,7 @@ const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
       onHover={swapComponents}
       cleanComponent={cleanComponent}
       updateComponent={updateComponent}
-      component={innerComponent} />
+      component={renderEmptyComponent} />
   );
 }
 

@@ -43,7 +43,6 @@ const DragAndDropBox: React.FC<DragAndBoxProps> = ({
     ),
     drop: () => ({ index, value, allowedDropEffect: "any" }),
     hover(data: any) {
-      console.log(data)
       if (data.index !== item.index && isHoverUsed === false) {
         isHoverUsed = true;
         onHover(index, data.index);
