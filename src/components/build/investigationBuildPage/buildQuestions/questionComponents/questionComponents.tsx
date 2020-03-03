@@ -60,7 +60,7 @@ class QuestionComponents extends React.Component<QuestionComponentsProps, any> {
 
   renderDropBox = (component: any, index: number) => {
     const updatingComponent = (compData: any) => {
-      //this.props.updateComponent(compData, index);
+      this.props.updateComponent(compData, index);
     }
 
     const { type } = this.props.question;
