@@ -25,11 +25,13 @@ export interface SwitchQuestionProps {
   swapComponents(index1:number, index2: number): void
   setQuestionHint(hintState: HintState): void
   removeComponent(componentIndex: number): void
+  putComponent(index:number, type:number): void
 }
 
 const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
   type, index, component, hint, locked, componentCount,
   swapComponents, onDrop,
+  putComponent,
   setQuestionHint,
   updateComponent,
   uniqueComponent,
@@ -90,6 +92,7 @@ const SwitchQuestionComponent: React.FC<SwitchQuestionProps> = ({
       data={component}
       onDrop={onDrop}
       onHover={swapComponents}
+      putComponent={putComponent}
       cleanComponent={cleanComponent}
       updateComponent={updateComponent}
       component={innerComponent} />

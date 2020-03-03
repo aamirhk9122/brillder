@@ -39,7 +39,7 @@ export interface BoxProps {
 const DragBox: React.FC<BoxProps> = ({
   name, onDrop, value, fontSize, isImage, src, label, marginTop, hoverMarginTop, fontFamily, locked
 }) => {
-  const item = { name, type: ItemTypes.BOX }
+  const item = { name, onlyDrag: true, value, type: ItemTypes.BOX }
   const [{ opacity }, drag] = useDrag({
     item,
     end(item: { name: string } | undefined, monitor: DragSourceMonitor) {

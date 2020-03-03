@@ -44,14 +44,24 @@ class QuestionComponents extends React.Component<QuestionComponentsProps, any> {
     }
   }
 
+  putComponent = (index: number, type: number) => {
+
+  }
+
   moveComponents = (index1: number, index2: number) => {
     let newComponents = Object.assign([], this.state.components) as any[];
     newComponents.forEach(comp => comp.isMoving = false);
     var temp = newComponents[index1];
-    newComponents[index1] = Object.assign({}, newComponents[index2]);
-    newComponents[index1].isMoving = true;
-    newComponents[index2] = Object.assign({}, temp);
-    this.setState({ components: newComponents });
+
+    if (index2) {
+      newComponents[index1] = Object.assign({}, newComponents[index2]);
+      newComponents[index1].isMoving = true;
+      newComponents[index2] = Object.assign({}, temp);
+      this.setState({ components: newComponents });
+      console.log(6)
+    } else {
+      console.log(5)
+    }
   }
 
   onDrop = (index1: any, index2: any) => {
@@ -99,6 +109,7 @@ class QuestionComponents extends React.Component<QuestionComponentsProps, any> {
       component={component}
       updateComponent={updatingComponent}
       hint={this.props.question.hint}
+      putComponent={this.putComponent}
       removeComponent={this.props.removeComponent}
       setQuestionHint={this.props.setQuestionHint}
       uniqueComponent={uniqueComponent} />

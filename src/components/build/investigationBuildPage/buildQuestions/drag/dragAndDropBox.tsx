@@ -23,13 +23,14 @@ export interface DragAndBoxProps {
   data: any
   onDrop(index1: number, index2: number): void
   onHover(index1: number, index2: number): void
+  putComponent(index: number, type: number): void
   component: React.FC<any>,
   cleanComponent(): void
   updateComponent(component:any, index:number):void
 }
 
 const DragAndDropBox: React.FC<DragAndBoxProps> = ({
-  locked, value, index, onDrop, onHover, data, component, cleanComponent, updateComponent
+  locked, value, index, onDrop, onHover, data, component, cleanComponent, updateComponent, putComponent
 }) => {
   const ref = useRef<HTMLDivElement>(null)
   let isHoverUsed = false;
@@ -44,9 +45,15 @@ const DragAndDropBox: React.FC<DragAndBoxProps> = ({
     drop: () => ({ index, value, allowedDropEffect: "any" }),
     hover(data: any) {
       if (data.index !== item.index && isHoverUsed === false) {
-        isHoverUsed = true;
-        onHover(index, data.index);
-        data.index = index;
+        if (data.onlyDrag) {
+          if (item.value === 0) {
+            putComponent(index, data.value)
+          }
+        } else {
+          isHoverUsed = true;
+          onHover(index, data.index);
+          data.index = index;
+        }
       }
     },
     canDrop: () => !locked,
