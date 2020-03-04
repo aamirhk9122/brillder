@@ -4,6 +4,7 @@
   width: 100%;
 
   .drop-box {
+    max-width: 30vw;
     margin-top: 0.1vw;
     border-radius: $global-drop-border-radius;
     padding: 0.2vw 0.2vw 0.2vw 0.2vw;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Button } from '@material-ui/core';
 
 import './questionComponents.scss';
@@ -15,6 +15,8 @@ import VerticalShuffleComponent from '../questionTypes/verticalShuffleBuild/vert
 import WordHighlightingComponent from '../questionTypes/wordHighlighting/wordHighlighting';
 import { Question, QuestionTypeEnum } from 'components/model/question';
 import { HintState } from 'components/build/baseComponents/Hint/Hint';
+// @ts-ignore
+import { Sortable } from '@shopify/draggable';
 
 
 type QuestionComponentsProps = {
@@ -34,6 +36,12 @@ const QuestionComponents = ({
   swapComponents, setQuestionHint, updateComponent,
   addComponent, removeComponent
 }: QuestionComponentsProps) => {
+
+  useEffect(() => {
+    const sortable = new Sortable(document.querySelectorAll('.sort-container'), {
+      draggable: '.sort-item'
+    });
+  })
   const renderDropBox = (component: any, index: number) => {
     const updatingComponent = (compData:any) => {
       updateComponent(compData, index);
@@ -84,11 +92,11 @@ const QuestionComponents = ({
   }
 
   return (
-    <div className="questions">
+    <div className="questions sort-container">
       {
         question.components.map((comp, i) => {
           return (
-            <Grid key={i} container direction="row" className="drop-box">
+            <Grid key={i} container direction="row" className="drop-box sort-item">
               {renderDropBox(comp, i)}
             </Grid>
           )

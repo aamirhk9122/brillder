@@ -113,7 +113,7 @@ const BuildQuestionComponent: React.FC<QuestionProps> = (
         </div>
           <Grid container direction="row">
             <Grid container item xs={4} sm={3} md={3} alignItems="center" className="parent-left-sidebar">
-              <Grid container item xs={12} className="left-sidebar" alignItems="center">
+              <Grid container item xs={12} className="left-sidebar sort-container" alignItems="center">
                 <DragBox
                   onDrop={setDropBoxItem}
                   locked={locked}

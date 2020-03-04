@@ -39,28 +39,6 @@ export interface BoxProps {
 const DragBox: React.FC<BoxProps> = ({
   name, onDrop, value, fontSize, isImage, src, label, marginTop, hoverMarginTop, fontFamily, locked
 }) => {
-  const item = { name, type: ItemTypes.BOX }
-  const [{ opacity }, drag] = useDrag({
-    item,
-    end(item: { name: string } | undefined, monitor: DragSourceMonitor) {
-      const dropResult: DropResult = monitor.getDropResult()
-      if (item && dropResult) {
-        const isDropAllowed =
-          dropResult.allowedDropEffect === 'any' ||
-          dropResult.allowedDropEffect === dropResult.dropEffect
-        if (isDropAllowed) {
-          onDrop(value, { value: dropResult.value, index: dropResult.index });
-        } else {
-          alert(`You cannot ${dropResult.dropEffect} an item into the ${dropResult.value}`);
-        }
-      }
-    },
-    collect: (monitor: any) => ({
-      opacity: monitor.isDragging() ? 0.9 : 1,
-    }),
-    canDrag: (monitor: any) => !locked
-  })
-
   const renderContent = () => {
     if (isImage) {
       return <div>
@@ -77,7 +55,7 @@ const DragBox: React.FC<BoxProps> = ({
   }
 
   return (
-    <Grid container item xs={12} ref={drag} className="drag-box-item" style={{ opacity, fontSize: fontSize, marginTop }}>
+    <Grid container item xs={12} className="drag-box-item sort-item" style={{ fontSize: fontSize, marginTop }}>
       {renderContent()}
     </Grid>
   )
