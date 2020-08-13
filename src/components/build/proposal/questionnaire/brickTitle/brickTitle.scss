@@ -4,5 +4,6 @@
 .proposal-phone-preview {
   @include phone_and_tabletL {
     display: none;
+    opacity: 0;
   }
 }
